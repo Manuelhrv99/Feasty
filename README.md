@@ -2,7 +2,7 @@
 
 ## Integrantes
 
-> Manue Rodríguez
+> Manuel Rodríguez
 
 > Hugo Angeles
 
