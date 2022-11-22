@@ -3,10 +3,6 @@ import './SearchPage.css';
 import { Button } from "@material-ui/core";
 import SearchResult from "./SearchResult";
 
-//import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-
 function SearchPage() {
     return (
         <div className='searchPage'>

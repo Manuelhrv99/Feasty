@@ -14,7 +14,7 @@
     background-color: white;
     position: absolute;
     left: 0;
-    top: 340px;
+    top: 460px;
 }
 
 .search > input {
@@ -23,7 +23,7 @@
     position: absolute;
     left: 0;
     height: 30px;
-    top: 388px;
+    top: 500px;
     border: none;
   }
   
@@ -34,7 +34,7 @@
 .search > button {
     position: absolute;
     left: 0;
-    top: 430px;
+    top: 536px;
     text-transform: inherit !important;
     background-color: #e68906;
     color: white;

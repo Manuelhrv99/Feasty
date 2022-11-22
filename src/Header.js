@@ -1,15 +1,55 @@
 import React from 'react'
 import './Header.css'
 import SearchIcon from "@material-ui/icons/Search";
-import { Avatar } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Logo from './img/Feasty_logo.gif'
+import { useState, useEffect } from "react";
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 function MyVerticallyCenteredModal(props) {
+
+    const initialValues = { username: "", email: "", cellphone: "" };
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setFormErrors(validate(formValues));
+        setIsSubmit(true);
+    };
+
+    useEffect(() => {
+        console.log(formErrors);
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            console.log(formValues);
+        }
+    }, [formErrors]); // eslint-disable-line react-hooks/exhaustive-deps
+    const validate = (values) => {
+        const errors = {};
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+        if (!values.username) {
+            errors.username = "¡Necesitas ingresar el Nombre!";
+        }
+        if (!values.email) {
+            errors.email = "¡Necesitas ingresar el Email!";
+        } else if (!regex.test(values.email)) {
+            errors.email = "Formato de correo no valido";
+        }
+        if (!values.cellphone) {
+            errors.cellphone = "¡Necesitas ingresar el Celular!";
+        }
+        return errors;
+    };
+
     return (
         <Modal
             {...props}
@@ -23,31 +63,57 @@ function MyVerticallyCenteredModal(props) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
+                {Object.keys(formErrors).length === 0 && isSubmit ? (
+                    <div>
+                        <center>
+                            <h3 id='SuccessMessage'>¡Registro exitoso!</h3>
+                        </center>
+                    </div>
+                ) : (
+                    <div></div>
+                )}
+                <form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="name" placeholder="Ingresa tu Nombre" />
+                        <Form.Control type="text"
+                            name="username"
+                            placeholder="Ingresa tu Nombre"
+                            value={formValues.username}
+                            onChange={handleChange}
+                        />
                     </Form.Group>
+                    <p>{formErrors.username}</p>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Ingresa tu Email" />
+                        <Form.Control
+                            type="text"
+                            name="email"
+                            placeholder="Ingresa tu Email"
+                            value={formValues.email}
+                            onChange={handleChange}
+                        />
                     </Form.Group>
+                    <p>{formErrors.email}</p>
 
                     <Form.Group className="mb-3" controlId="formBasicCel">
                         <Form.Label>Celular</Form.Label>
-                        <Form.Control type="cellphone" placeholder="Ingresa tu Celular" />
+                        <Form.Control
+                            type="text"
+                            name="cellphone"
+                            placeholder="Ingresa tu Numero"
+                            value={formValues.cellphone}
+                            onChange={handleChange}
+                        />
                     </Form.Group>
+                    <p>{formErrors.cellphone}</p>
             
-                    {/* <Button variant="primary" type="submit">
-                        Submit
-                    </Button> */}
-                </Form>
+                    <center>
+                        <Button variant="danger" onClick={props.onHide}>Cancelar</Button>
+                        <Button type="submit">Enviar</Button>
+                    </center>
+                </form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="danger" onClick={props.onHide}>Cancelar</Button>
-                <Button type="submit" onClick={props.onHide}>Enviar</Button>
-            </Modal.Footer>
         </Modal>
     );
 }
@@ -80,8 +146,6 @@ function Header() {
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                 />
-
-                <Avatar />
             </div>
         </div>
     )
